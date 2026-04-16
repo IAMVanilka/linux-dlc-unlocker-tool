@@ -1,5 +1,7 @@
 # Linux DLC Unlocker Tool (ldu-tool)
 
+### [ENGLISH README HERE](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/blob/main/README_en.md)
+
 Утилита на Python для автоматической разблокировки всех DLC игры **Stellaris** в Linux-среде (Steam). Скрипт использует эмулятор Steam API (Goldberg Emulator) и автоматически загружает необходимые файлы контента.
 
 > ⚠️ Данная утилита не предназначена для анлока DLC на **windows**! Аналогичный софт для windows можно найти в **[данном репозитории](https://github.com/seuyh/stellaris-dlc-unlocker)**.
@@ -37,7 +39,7 @@ chmod +x ldu-tool.py
 ## ⚙️  Список команд
 |Команда|Назначение  |
 |--|--|
-|`./ldu-tool.py -h/--help` `./ldu-tool.py install -h/--help`|Отобразить подсказку по командам|
+| `./ldu-tool.py -h/--help` / `./ldu-tool.py install -h/--help` | Отобразить подсказку по командам|
 | `./ldu-tool.py install` | Запускает базовую установку в директории где находится скрипт. Скачивает dlc и модифицированную библиотеку `libsteam_api.so` |
 |`./ldu-tool.py install --path/-p <PATH_TO_GAME>`|Запускает базовую установку по указанному пути. Скачивает dlc и модифицированную библиотеку `libsteam_api.so`|
 |`./ldu-tool.py install --dlc`|Скачивает **только DLC** с удаленного сервера|
