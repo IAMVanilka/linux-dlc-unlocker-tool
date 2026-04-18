@@ -1,5 +1,7 @@
 # Linux DLC Unlocker Tool (ldu-tool)
 
+[![PyPI](https://img.shields.io/pypi/v/ldu-tool.svg)](https://pypi.org/project/ldu-tool)
+
 ### [ENGLISH README HERE](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/blob/main/README_en.md)
 
 Утилита на Python для автоматической разблокировки всех DLC игры **Stellaris** в Linux-среде (Steam). Скрипт использует эмулятор Steam API (Goldberg Emulator) и автоматически загружает необходимые файлы контента.
