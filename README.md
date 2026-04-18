@@ -21,29 +21,61 @@
 - Права на запись в директорию с установленной игрой
 
 ## 🚀 Установка и запуск
-1. [Скачайте утилиту](https://raw.githubusercontent.com/IAMVanilka/linux-dlc-unlocker-tool/main/ldu-tool.py) в удобное вам место.
-2. Установите библиотеку **requests**, если по какой-то причине в вашем дистрибутиве её нет.
+Установка производится через **`pipx`** (*рекомендую*) или **`pip`**
+1. Если у вас не установлен `pipx`, устанавливаем его (*пример для **arch linux***):
 ```bash
-pip3 install requests
+pacman -S python-pipx
 ```
-3. Поместите скрипт в папку с игрой.
-4. Дайте скрипту права на исполнение.
+2. Далее нужно установить сам `ldu-tool`
 ```bash
-chmod +x ldu-tool.py
+pipx install ldu-tool
 ```
-5. Запустите скрипт.
+3. Проверяем что `ldu-tool` корректно встал
 ```bash
-./ldu-tool.py install
+ldu-tool --version
 ```
+Если отобразилась версия утилиты, то значит вы всё сделали правильно!
+
+**Альтернативный вариант установки (*работа с иходниками*):**
+1. Клонируем данный репозиторий в удобное вам место
+```bash
+git clone https://github.com/IAMVanilka/linux-dlc-unlocker-tool
+```
+2. Переходим в папку с репозиторием
+```bash
+cd linux-dlc-unlocker-tool
+```
+3. Создаем виртуальное окружение (*необходим **python-env***)
+```bash
+python -m venv .venv
+```
+4. Активируем окружение
+```bash
+source venv/bin/activate
+ИЛИ
+source venv/bin/activate.fish # Если у вас fish вместо bash
+```
+5. Устанавливаем зависимости
+```bash
+pip install -r requirements.txt
+```
+6. Проверяем работу утилиты
+```bash
+python modules/main.py --version
+```
+Если отобразилась версия утилиты, то значит вы всё сделали правильно!
 
 ## ⚙️  Список команд
 |Команда|Назначение  |
 |--|--|
-| `./ldu-tool.py -h/--help` / `./ldu-tool.py install -h/--help` | Отобразить подсказку по командам|
-| `./ldu-tool.py install` | Запускает базовую установку в директории где находится скрипт. Скачивает dlc и модифицированную библиотеку `libsteam_api.so` |
-|`./ldu-tool.py install --path/-p <PATH_TO_GAME>`|Запускает базовую установку по указанному пути. Скачивает dlc и модифицированную библиотеку `libsteam_api.so`|
-|`./ldu-tool.py install --dlc`|Скачивает **только DLC** с удаленного сервера|
-|`./ldu-tool.py install --libs/-l`|Скачивает **только `libsteam_api.so`** с удаленного сервера|
+|**Базовые**|--|
+| `ldu-tool -V/--version`| Отобразить версию инструмента|
+| `ldu-tool -h/--help` / `ldu-tool install -h/--help` | Отобразить подсказку по командам|
+|**Install**|
+| `ldu-tool install` | Запускает базовую установку в директории где находится скрипт. Скачивает dlc и модифицированную библиотеку `libsteam_api.so` |
+|`ldu-tool install --path/-p <PATH_TO_GAME>`|Запускает базовую установку по указанному пути. Скачивает dlc и модифицированную библиотеку `libsteam_api.so`|
+|`ldu-tool install --dlc`|Скачивает **только DLC** с удаленного сервера|
+|`ldu-tool install --libs/-l`|Скачивает **только `libsteam_api.so`** с удаленного сервера|
 
 ## 🔍 Как это работает?
 

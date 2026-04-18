@@ -16,30 +16,63 @@ A Python utility for automatically unlocking all **Stellaris** game DLCs in a Li
 
 ## 🚀 Installation and Launch
 
-1. [Download the utility](https://raw.githubusercontent.com/IAMVanilka/linux-dlc-unlocker-tool/main/ldu-tool.py) to a convenient location.
-2. Install the **requests** library, if it's not present in your distribution for some reason:
+Installation is performed via **`pipx`** (*recommended*) or **`pip`**.
+
+1. If you don't have `pipx` installed, install it (*example for **Arch Linux***):
 ```bash
-pip3 install requests
+pacman -S python-pipx
 ```
-3. Place the script in the game folder.
-4. Give the script execute permissions:
+2. Next, install the `ldu-tool` itself:
 ```bash
-chmod +x ldu-tool.py
+pipx install ldu-tool
 ```
-5. Run the script:
+3. Verify that `ldu-tool` was installed correctly:
 ```bash
-./ldu-tool.py install
+ldu-tool --version
 ```
+If the utility version is displayed, it means you did everything correctly!
+
+**Alternative installation option (*working with source code*):**
+1. Clone this repository to a convenient location:
+```bash
+git clone https://github.com/IAMVanilka/linux-dlc-unlocker-tool 
+```
+2. Navigate to the repository folder:
+```bash
+cd linux-dlc-unlocker-tool
+```
+3. Create a virtual environment (*requires **python-env***):
+```bash
+python -m venv .venv
+```
+4. Activate the environment:
+```bash
+source venv/bin/activate
+OR
+source venv/bin/activate.fish # If you use fish instead of bash
+```
+5. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+6. Verify the utility is working:
+```bash
+python modules/main.py --version
+```
+If the utility version is displayed, it means you did everything correctly!
 
 ## ⚙️ Command List
 
 | Command | Description |
 |---------|-------------|
-| `./ldu-tool.py -h/--help` / `./ldu-tool.py install -h/--help` | Display command help |
-| `./ldu-tool.py install` | Starts basic installation in the directory where the script is located. Downloads DLC and the modified `libsteam_api.so` library |
-| `./ldu-tool.py install --path/-p <PATH_TO_GAME>` | Starts basic installation at the specified path. Downloads DLC and the modified `libsteam_api.so` library |
-| `./ldu-tool.py install --dlc` | Downloads **only DLC** from the remote server |
-| `./ldu-tool.py install --libs/-l` | Downloads **only `libsteam_api.so`** from the remote server |
+| **Common** |
+| `ldu-tool -V/--version`| Show tool verison|
+| `ldu-tool -h/--help` / `ldu-tool install -h/--help` | Display command help |
+| **Install** |
+| `ldu-tool install` | Starts basic installation in the directory where the script is located. Downloads DLC and the modified `libsteam_api.so` library |
+| `ldu-tool install --path/-p <PATH_TO_GAME>` | Starts basic installation at the specified path. Downloads DLC and the modified `libsteam_api.so` library |
+| `ldu-tool install --dlc` | Downloads **only DLC** from the remote server |
+| `ldu-tool install --libs/-l` | Downloads **only `libsteam_api.so`** from the remote server |
 
 ## 🔍 How It Works?
 
