@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+from .configs.dlc_folders_hashes import dlc_hashes
 
-from modules._version import __version__
+from ._version import __version__
 from urllib.parse import urljoin
+from dirhash import dirhash
 from pathlib import Path 
 from tqdm import tqdm
 import subprocess
@@ -15,9 +17,9 @@ import re
 APP_ID = 281990
 
 class DLCTool:
-    def __init__(self, game_dir):
-        self.GITHUB_DATA_URL = 'https://raw.githubusercontent.com/seuyh/stellaris-dlc-unlocker/main/data.json'
-        self.app_id=APP_ID
+    def __init__(self, game_dir: str | Path):
+        self.GITHUB_DATA_URL: str = 'https://raw.githubusercontent.com/seuyh/stellaris-dlc-unlocker/main/data.json'
+        self.app_id = APP_ID
         self.game_dir = Path('.' if game_dir is None else game_dir)
         self.dlc_dir = Path(self.game_dir / 'dlc/')
 
@@ -33,6 +35,33 @@ class DLCTool:
                     exit(1)
         except Exception:
             raise Exception("Unexpected error while checking game directory.")
+        
+    def hash_check(self) -> list[str]:
+        print("DLC files checking...")
+        dlcs_to_download = []
+
+        Path(self.dlc_dir).mkdir(exist_ok=True)
+
+        local_dlc_folders = os.scandir(self.dlc_dir)
+        local_dlc_folders = {dlc_folder.name:dlc_folder.path for dlc_folder in local_dlc_folders}
+
+        for dlc, dlc_hash in dlc_hashes.items():
+            if dlc in local_dlc_folders:
+                local_dlc_path = local_dlc_folders[dlc]
+                local_dlc_hash = dirhash(local_dlc_path, "md5")
+                if local_dlc_hash != dlc_hash:
+                    dlcs_to_download.append(dlc)
+                    continue
+            else:
+                dlcs_to_download.append(dlc)
+                continue
+        
+        if dlcs_to_download:
+            print(f"List of DLCs for download: {dlcs_to_download}")
+        else:
+            print("Nothing to download.")
+
+        return dlcs_to_download
 
     def _download_goldberg_steamlib(self):
         print("Downloading goldberg lib...")
@@ -96,7 +125,10 @@ class DLCTool:
         except Exception:
             raise Exception("Error while fetching data form GitHub!")
 
-    def _download_dlcs(self):
+    def _download_dlcs(self, data_to_download: list[str] = [], force = False):
+        if not data_to_download:
+            return
+
         urls = self._get_dlcs_url()
         base_url = f"https://{urls['url']}/unlocker/"
         try:
@@ -118,19 +150,22 @@ class DLCTool:
                 full_url = urljoin(base_url, link)
                 filename = Path(full_url.split('?')[0]).name
                 filepath = self.dlc_dir / filename
+                if Path(filename).with_suffix('').name in data_to_download or force:
+                    print("LOADING FILE: ", filename)
+                    with requests.get(full_url, stream=True, timeout=60) as file_res:
+                        file_res.raise_for_status()
+                        total_size = int(file_res.headers.get('content-length', 0))
 
-                with requests.get(full_url, stream=True, timeout=60) as file_res:
-                    file_res.raise_for_status()
-                    total_size = int(file_res.headers.get('content-length', 0))
+                        with tqdm(total=total_size, unit='B', unit_scale=True, desc=filename) as pbar:
+                            with open(filepath, 'wb') as f:
+                                for chunk in file_res.iter_content(chunk_size=8192):
+                                    if chunk:
+                                        f.write(chunk)
+                                        pbar.update(len(chunk))
 
-                    with tqdm(total=total_size, unit='B', unit_scale=True, desc=filename) as pbar:
-                        with open(filepath, 'wb') as f:
-                            for chunk in file_res.iter_content(chunk_size=8192):
-                                if chunk:
-                                    f.write(chunk)
-                                    pbar.update(len(chunk))
-
-                print(f"Done: {filename}")
+                    print(f"Done: {filename}")
+                else:
+                    continue
 
             print("DLCs downloaded successfully!")
 
@@ -152,22 +187,34 @@ class DLCTool:
         except Exception:
             raise Exception("Error during unpacking dlc archives!")
 
-    def install_dlcs(self):
-        print(f"DLCs installing started. Path {self.game_dir}")
-        self._download_dlcs()
+    def install_dlcs(self, force = False):
+        print(f"DLCs installing started{" [FORCED]." if force else "."} Path: {self.game_dir.absolute()}")
+        if not force:
+            files_to_download = self.hash_check()
+            self._download_dlcs(files_to_download)
+        else:
+            self._download_dlcs(force=force)
+
+        self._unzip_files()
         print("DLCs installing done!")
 
     def install_libs(self):
-        print(f"Libs installing started. Path {self.game_dir}")
+        print(f"Libs installing started. Path: {self.game_dir.absolute()}")
         self._download_goldberg_steamlib()
         self._create_dlcs_file()
         print("Libs installing done!")
 
-    def install(self):
-        print(f"Installing started. Path {self.game_dir}")
+    def install(self, force = False):
+        print(f"Installing started{" [FORCED]." if force else "."}. Path: {self.game_dir.absolute()}")
         self._download_goldberg_steamlib()
         self._create_dlcs_file()
-        self._download_dlcs()
+
+        if not force:
+            files_to_download = self.hash_check()
+            self._download_dlcs(files_to_download)
+        else:
+            self._download_dlcs(force=force)
+
         self._unzip_files()
         print("Installing done! Launch the game? (only for Steam)")
         while True:
@@ -183,7 +230,7 @@ class DLCTool:
             elif answer.lower() == "n" or answer.lower() == "no":
                 break
             else:
-                print("Input y/yes or n/no\n")
+                print("Input y/yes or n/no")
 
 
 def run():
@@ -197,22 +244,25 @@ def run():
     install_parser.add_argument("--dlc", action="store_true", help="Install DLCs")
     install_parser.add_argument("-l", "--libs", action="store_true", help="Install libs")
     install_parser.add_argument("-p", "--path", nargs=1, help="Install by specifying the path to the game.")
+    install_parser.add_argument("-f", "--force", action="store_true", help="Reinstall all DLCs even if they have already been downloaded.")
 
     args = parser.parse_args()
     
     if args.version:
-        print(f"Linux DLC Unlocker Tool v. {__version__}")
+        print(f"Linux DLC Unlocker Tool v.{__version__}")
     elif args.command == "install":
         game_path = args.path[0] if isinstance(args.path, list) else None
 
         dlc_tool = DLCTool(game_dir=game_path)
         dlc_tool.check_game_dir()
 
+        FORCE_FLAG = True if args.force else False
+
         if args.dlc:
-            dlc_tool.install_dlcs()
+            dlc_tool.install_dlcs(force=FORCE_FLAG)
         if args.libs:
             dlc_tool.install_libs()
         if not args.dlc and not args.libs:
-            dlc_tool.install()
+            dlc_tool.install(force=FORCE_FLAG)
     else:
         parser.print_help()

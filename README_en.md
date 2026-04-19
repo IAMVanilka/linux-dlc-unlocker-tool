@@ -11,9 +11,8 @@ A Python utility for automatically unlocking all **Stellaris** game DLCs in a Li
 
 ## 📋 Requirements
 
-- **Python 3.6+**
-- **`requests`** library
-- **`wget`** (standard Linux utility for downloading files via HTTP/HTTPS)
+- **Python 3.8+**
+- **Libraries: `requests`, `tqdm>=4.67.3`, `dirhash==0.5.0`**
 - Internet access (VPN may be required to access `api.steamcmd.net` from some regions, including Russia)
 - Write permissions for the game installation directory
 
