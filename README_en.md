@@ -59,7 +59,7 @@ pip install -r requirements.txt
 ```
 6. Verify the utility is working:
 ```bash
-python modules/main.py --version
+python -m modules.main --version
 ```
 If the utility version is displayed, it means you did everything correctly!
 
@@ -73,17 +73,18 @@ If the utility version is displayed, it means you did everything correctly!
 | **Install** |
 | `ldu-tool install` | Starts basic installation in the directory where the script is located. Downloads DLC and the modified `libsteam_api.so` library |
 | `ldu-tool install --path/-p <PATH_TO_GAME>` | Starts basic installation at the specified path. Downloads DLC and the modified `libsteam_api.so` library |
-| `ldu-tool install --dlc` | Downloads **only DLC** from the remote server |
+| `ldu-tool install --dlc` | Downloads **only DLCs** from the remote server |
 | `ldu-tool install --libs/-l` | Downloads **only `libsteam_api.so`** from the remote server |
+|`ldu-tool install --force/-f`|Downloads and unpacks DLCs even if they are already installed|
 
 ## 🔍 How It Works?
 
-1. **Directory Check:** The script looks for the `stellaris` binary file in the specified folder. If not found, it prompts the user for confirmation.
-2. **API Emulator:** Downloads the latest build of `libsteam_api.so` from the Goldberg Emulator GitLab repository and places it in the game root.
-3. **DLC Setup:** Creates the `steam_settings/` folder and the `dlc.txt` file, populating it with IDs of all official DLCs via the public API `api.steamcmd.net`.
-4. **Content Download:** Downloads ZIP archives with DLC files from an external file server specified in `data.json` in **[this repository](https://github.com/seuyh/stellaris-dlc-unlocker)**.
-5. **Extraction:** Extracts the archive contents into the `dlc/` folder and automatically deletes the original `.zip` files.
-6. **Launch (optional):** After installation, offers to launch the game via Steam using the `steam://run/281990` protocol.
+1. **Directory Check:** The script searches for the `stellaris` binary in the specified folder. If it is not found, it prompts the user for confirmation.
+2. **API Emulator:** Downloads the latest build of `libsteam_api.so` from the **[fork of the Goldberg Emulator GitLab repository](https://github.com/Detanup01/gbe_fork)** and places it in the game's root directory.
+3. **DLC Setup:** Creates the `steam_settings/` folder and the `configs.app.ini` file, populating it with the `dlc_id:name` of all official DLCs via the public API `api.steamcmd.net`.
+4. **Download Content:** Downloads ZIP archives with DLC files from the external file server specified in `data.json` in **[this repository](https://github.com/seuyh/stellaris-dlc-unlocker)**.
+5. **Unpack:** Extracts the archive contents to the `dlc/` folder and automatically deletes the original `.zip` files.
+6. **Run (optional):** After installation, offers to launch the game through Steam using the `steam://run/281990` protocol.
 
 ## 📂 File Structure After Installation
 
@@ -92,15 +93,20 @@ If the utility version is displayed, it means you did everything correctly!
 ├── stellaris              # Main game executable
 ├── libsteam_api.so        # Steam API Emulator (Goldberg)
 ├── steam_settings/
-│   └── dlc.txt            # List of IDs for all unlocked DLCs
-└── dlc/                   # Unpacked DLC content files
+│   └── steam_appid.txt
+        configs.app.ini    # Emulator settings and DLCs information.
+└── dlc/                   # Unpacked DLCs content
 ```
 
 ## ❓ Troubleshooting
 
-- **Connection error to `api.steamcmd.net`:** Try using a VPN or proxy if you are in a region with restricted access.
-- **`PermissionError` when creating folders:** Ensure your user has write permissions for the game folder. Do not run the script with `sudo`; instead, change the folder owner via `chown -R $USER:$USER /path/to/Stellaris` (recursively changes the owner of the folder and all its subfiles to the current user).
-- **Game does not see DLC:** Check that `libsteam_api.so` is in the same directory as the `stellaris` binary, and that the `dlc/` folder contains unpacked files, not archives.
+- **Connection error to `api.steamcmd.net`:** Try using a VPN or proxy if you are in a region with access restrictions.
+
+- **`PermissionError` when creating folders:** Make sure your user has write permissions to the game folder. Do not run the script with `sudo`; instead, change the folder owner via `chown -R $USER:$USER /path/to/Stellaris` (recursively changes the owner of the folder and all its contents to the current user).
+
+- **Game doesn't see DLCs:** Check that `libsteam_api.so` is in the same directory as the `stellaris` binary, and that the `dlc/` folder contains unpacked files, not archives. Check the `steam_settings/configs.app.ini` file. Inside, there should be a `[app::dlcs]` section with all DLCs in the format `dlc_id = dlc_name`. If everything seems fine and nothing works, open an [issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/new) and we'll discuss it.
+
+- **Lost saves:** When using a modified `libsteam_api.so` library, you will have to give up **Steam Cloud Saves**, as the library intercepts all requests to the **Steam API**. **Game saves are written to:** `~/.local/share/Paradox Interactive/Stellaris/save games/`. If you need to transfer saves to another device, you'll have to do it manually (**like a true pirate!**).
 
 ## 📜 License
 
