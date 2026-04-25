@@ -1,9 +1,8 @@
-dlc_hashes = {
-    "dlc001_symbols_of_domination": "3fb80b80965b70a85f296c72134ab174",
+dlc_hashes: dict[str, str] = {
+    "dlc001_symbols_of_domination": "3ced1e3fd65b74427c24c62a78b2d60a",
     "dlc002_arachnoid": "4a6ef4b9c23237a5188cfde542c07657",
-    "dlc003_signup_bonus": "867d5679f2e793305c21cb16642101a7",
+    "dlc003_signup_bonus": "a29f8b183fc018744887816d994b0d26",
     "dlc004_plantoid": "82231ebb4e51f24732ba85221f784377",
-    "dlc005_novel": "7f7a9551aebc6651d531679cf00f4766",
     "dlc010_creatures_of_the_void": "c6de81eaf298bd32d639b37c2e455b81",
     "dlc012_leviathans": "4b5ac41d3cc1ccdc658a5da68e926f3c",
     "dlc013_horizon_signal": "7ba869dfe36f28d3a0e2f0c68a6dd1d9",
@@ -31,6 +30,6 @@ dlc_hashes = {
     "dlc035_rick_the_cube": "4e2e77672ea041cf8281ef6c1e46948a",
     "dlc036_biogenesis": "5680bbb6b44bafe2a6f64defe3289f25",
     "dlc037_shadows_shroud": "318089c87591738a64b6ad88bf17aae3",
-    "dlc038_infernals": "232438bba994f3b60326ff2c1c97790e",
-    "dlc039_stargazer": "771d6d6f807cb86e9a40a9245bfe9d93"
+    "dlc038_infernals": "a8255c2b6eded2da253d9e8cf0f1bd05",
+    "dlc039_stargazer": "771d6d6f807cb86e9a40a9245bfe9d93",
 }

@@ -1,5 +1,14 @@
  # Changelog
----
+
+## Ver [2.1.0] - 2026-04-25
+
+### Added
+- Added a command to display available games for unlocking (*the ability to unlock other games is currently under development*).
+
+### Changed
+- The project architecture has been completely reviewed and redesigned.
+- A dedicated **S3 Bucket** has been deployed and integrated for storing DLC files. The project is now independent of third-party resources.
+
 
 ## Ver [2.0.0] - 2026-04-21
 ### Fixed
@@ -13,7 +22,6 @@
 - Changed parsing of available DLC data.
 - Full test coverage of new functions.
 
----
 
 ## Ver [1.1.0.dev2] - 2026-04-20 [<u>DEPRECATED!</u>]
 ### Added

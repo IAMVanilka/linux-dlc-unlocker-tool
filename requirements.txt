@@ -1,3 +1,5 @@
 requests
 tqdm>=4.67.3
 dirhash==0.5.0
+pytest
+typer==0.24.2

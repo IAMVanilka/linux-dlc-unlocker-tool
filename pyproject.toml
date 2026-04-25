@@ -1,12 +1,12 @@
 [project]
 name = "ldu-tool"
-version = "2.0.0"
+version = "2.1.0"
 description = "Linux DLC Unlocker Tool - unlocks all DLCs for Stellaris game."
-dependencies = ["requests", "tqdm>=4.67.3", "dirhash==0.5.0"]
+dependencies = ["requests", "tqdm>=4.67.3", "dirhash==0.5.0", "typer==0.24.2"]
 requires-python = ">=3.8"
 
 [project.scripts]
-ldu-tool = "modules.main:run"
+ldu-tool = "modules.main:app"
 
 [build-system]
 requires = ["setuptools"]
@@ -19,4 +19,4 @@ include-package-data = true
 where = ["."]
 
 [tool.setuptools.package-data]
-"modules" = ["configs/**/*"]
+"modules" = ["games/**/*"]
