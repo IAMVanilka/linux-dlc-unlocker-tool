@@ -1,5 +1,3 @@
-# Linux DLC Unlocker Tool (ldu-tool)
-
 <img width="560" height="170" alt="ldu-tool-header" src="assets/ldu-header.png" />
 
 [![PyPI](https://img.shields.io/pypi/v/ldu-tool.svg)](https://pypi.org/project/ldu-tool) [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/) [![License: GPL 3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](LICENSE)

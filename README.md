@@ -1,5 +1,3 @@
-# Linux DLC Unlocker Tool (ldu-tool)
-
 <img width="560" height="170" alt="ldu-tool-header" src="assets/ldu-header.png" />
 
 
