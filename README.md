@@ -1,5 +1,8 @@
 # Linux DLC Unlocker Tool (ldu-tool)
 
+<img width="560" height="170" alt="ldu-tool-header" src="assets/ldu-header.png" />
+
+
 [![PyPI](https://img.shields.io/pypi/v/ldu-tool.svg)](https://pypi.org/project/ldu-tool) [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/) [![License: GPL 3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](LICENSE)
 
 ### [ENGLISH README HERE](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/blob/main/README_en.md)
@@ -15,6 +18,7 @@
 
 ⚠️ **Важно:** Инструмент работает **только на Linux**. Использование осуществляется на ваш собственный риск.
 
+<img width="560" height="300" alt="ldu-tool-demonstration" src="assets/ldu-demonstation.gif" />
 
 ## 🚀 Быстрый старт
 
@@ -81,13 +85,14 @@ ldu-tool install --path /путь/к/Stellaris
 |--|--|
 |**Базовые**|--|
 | `ldu-tool -V/--version`| Отобразить версию инструмента|
-| `ldu-tool -h/--help` / `ldu-tool install -h/--help` | Отобразить подсказку по командам|
+| `ldu-tool --help` / `ldu-tool install --help` | Отобразить подсказку по командам|
 |**Install**|
 | `ldu-tool install` / `ldu-tool install <game_name>` | Запускает базовую установку в директории где находится скрипт. Скачивает dlc и модифицированную библиотеку `libsteam_api.so` |
 |`ldu-tool install --path/-p <PATH_TO_GAME>`|Запускает базовую установку по указанному пути. Скачивает dlc и модифицированную библиотеку `libsteam_api.so`|
 |`ldu-tool install --dlc`|Скачивает **только DLC** с удаленного сервера|
 |`ldu-tool install --libs/-l`|Скачивает **только `libsteam_api.so`** с удаленного сервера|
 |`ldu-tool install --force/-f`|Скачивает и распаковывает DLC даже, если они уже установлены|
+|`ldu-tool install --mods/-m`|Монтирует папку **steam workshop** в папку с модами|
 |**List**||
 |`ldu-tool list`|Отображает доступные для разблокировки игры|
 
@@ -117,12 +122,10 @@ ldu-tool install --path /путь/к/Stellaris
 -   **`PermissionError` при создании папок:** Убедитесь, что у вашего пользователя есть права на запись в папку с игрой. Не запускайте скрипт через `sudo`, лучше измените владельца папки через `chown -R $USER:$USER /путь/к/Stellaris` (рекурсивно меняет владельца папки и всех её вложенных файлов на текущего пользователя).
 -   **Игра не видит DLC:** Проверьте, что `libsteam_api.so` лежит в той же директории, что и бинарник `stellaris`, а папка `dlc/` содержит распакованные файлы, а не архивы. Проверьте файл `steam_settings/configs.app.ini`. Внутри должен быть раздел `[app::dlcs]` в котором все DLC в формате `dlc_id = dlc_name`. Если всё вроде ОК и ничего не работает, то открывайте [issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/new), обсудим вопрос).
 - **Потерялись сохранения:** Используя модифицированную библиотеку `libsteam_api.so`, вам придётся отказаться от **Steam Cloud Saves**, так как библиотека перехватывает все запросы к **steam api**. **Сохранения игры пишутся в директорию:** `~/.local/share/Paradox Interactive/Stellaris/save games/`. Если нужно перенести сейвы на другое устройство, то придётся это делать вручную (***как настоящий пират!***).
-- **Не работают моды:** Пока что решение данного вопроса находится в **[данном issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/3)**.
 
 
 ## 🤝 Поддержка и развитие
 Нашли баг, хотите предложить улучшение или добавить поддержку другой игры? Создайте **[Issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/new)** или отправьте Pull Request.
-Проект распространяется "как есть" и создан в образовательных целях.
 
 
 ## 📜 Лицензия

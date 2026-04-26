@@ -3,9 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 IAMVanilka
 
+import typer
 from ._version import __version__
 from .games.base_strategy import BaseGameStrategy
-from .utils import files_hash_check, unzip_files, run_the_game
+from .utils import files_hash_check, unzip_files, run_the_game, mount_steam_workshop
 from .games.stellaris.stellaris_strategy import StellarisStrategy
 
 from enum import Enum
@@ -35,7 +36,9 @@ class DLCTool:
         self.strategy.download_dlcs(dlcs_to_download)    
         unzip_files(self.strategy.dlc_dir)
 
-        if typer.confirm("Installing done! Launch the game? (only for Steam)"):
+        if typer.confirm("✅ Installation done! Mount Steam Workshop content to mods folder? (Required for unlocker compatibility)"):
+            mount_steam_workshop(self.strategy.game_dir, self.strategy.app_id)
+        if typer.confirm("Launch the game? (only for Steam)"):
             run_the_game(self.strategy.app_id)
 
     def install_only_dlcs(self, force=False):
@@ -74,7 +77,8 @@ def install(
     dlc: bool = typer.Option(False, "--dlc", help="Install DLCs"),
     libs: bool = typer.Option(False, "-l", "--libs", help="Install libs"),
     path: str | None = typer.Option(None, "-p", "--path", help="Install by specifying the path to the game."),
-    force: bool = typer.Option(False, "-f", "--force", help="Reinstall all DLCs even if they have already been downloaded.")
+    force: bool = typer.Option(False, "-f", "--force", help="Reinstall all DLCs even if they have already been downloaded."),
+    mods: bool = typer.Option(False, "-m", "--mods", help="Mount Steam Workshop content as mods.")
     ):
     """Install libs and DLCs"""
 
@@ -96,11 +100,16 @@ def install(
 
     tool.strategy.check_game_dir()
 
+    if mods:
+        print(f"Workshop mounting started.")
+        mount_steam_workshop(tool.strategy.game_dir, tool.strategy.app_id)
+        return
     if dlc:
-        print(f"Only DLCs mode. {'[FORCED]' if force else ''}")
+        print(f"DLCs install scenario started. {'[FORCED]' if force else ''}")
         tool.install_only_dlcs(force=force)
     if libs:
-        print("Mock libs install")
+        print(f"Libs install scenario started")
+        tool.install_only_libs()
     if not dlc and not libs:
         print(f"Default install scenario for {game.name} started. {'[FORCED]' if force else ''}")
         tool.default_install_scenario(force=force)

@@ -1,5 +1,7 @@
 # Linux DLC Unlocker Tool (ldu-tool)
 
+<img width="560" height="170" alt="ldu-tool-header" src="assets/ldu-header.png" />
+
 [![PyPI](https://img.shields.io/pypi/v/ldu-tool.svg)](https://pypi.org/project/ldu-tool) [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/) [![License: GPL 3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](LICENSE)
 
 ⚡ Automatic unlocking of all DLCs for Stellaris on Linux (Steam) without any extra hassle.
@@ -13,6 +15,7 @@
 
 ⚠️ **Important:** The tool works **only on Linux**. Use it at your own risk.
 
+<img width="560" height="300" alt="ldu-tool-demonstration" src="assets/ldu-demonstation.gif" />
 
 ## 🚀 Quick Start
 
@@ -86,6 +89,7 @@ ldu-tool install --path /path/to/Stellaris
 |`ldu-tool install --dlc`|Downloads **only DLCs** from the remote server|
 |`ldu-tool install --libs/-l`|Downloads **only `libsteam_api.so`** from the remote server|
 |`ldu-tool install --force/-f`|Downloads and unpacks DLCs even if they are already installed|
+|`ldu-tool install --mods/-m`|Mounts the **Steam Workshop** folder into the mods directory.|
 |**List**|
 |`ldu-tool list`|Displays games available for unlocking|
 
@@ -115,7 +119,6 @@ ldu-tool install --path /path/to/Stellaris
 -   **`PermissionError` when creating folders:** Make sure your user has write permissions to the game folder. Do not run the script via `sudo`; it is better to change the folder owner via `chown -R $USER:$USER /path/to/Stellaris` (recursively changes the owner of the folder and all its nested files to the current user).
 -   **Game does not see DLCs:** Check that `libsteam_api.so` is in the same directory as the `stellaris` binary, and that the `dlc/` folder contains unpacked files, not archives. Check the `steam_settings/configs.app.ini` file. It should contain an `[app::dlcs]` section with all DLCs in the format `dlc_id = dlc_name`. If everything seems OK and nothing works, open an [issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/new) and we will discuss the issue).
 - **Lost saves:** When using the modified `libsteam_api.so` library, you will have to give up **Steam Cloud Saves**, as the library intercepts all requests to the **steam api**. **Game saves are written to the directory:** `~/.local/share/Paradox Interactive/Stellaris/save games/`. If you need to transfer saves to another device, you will have to do it manually (***like a true pirate!***).
-- **Mods not working:** A solution to this issue is currently being discussed in **[this issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/3)**.
 
 
 ## 🤝 Support and Development

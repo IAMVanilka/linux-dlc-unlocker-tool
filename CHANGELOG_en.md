@@ -1,5 +1,11 @@
  # Changelog
 
+## Ver [2.2.0] - 2026-04-26
+
+### Added
+- Added the ability to mount the Steam Workshop directory into the `steam_settings/mods` folder (*this was discussed in **[this issue](https://github.com/IAMVanilka/linux-dlc-unlocker-tool/issues/3)***). Thanks to this, mods now also work after installing the unlocker.
+
+
 ## Ver [2.1.0] - 2026-04-25
 
 ### Added
