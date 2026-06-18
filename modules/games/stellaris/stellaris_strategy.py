@@ -13,7 +13,8 @@ class StellarisStrategy(BaseGameStrategy):
     app_id = 281990
     game_name = "Stellaris"
     lib_download_url = "https://api.github.com/repos/Detanup01/gbe_fork/releases/latest"
-    dlc_download_url = "https://9924021b98ddcb42673ac2b9e55118bf.bckt.ru"
+    #dlc_download_url = "https://9924021b98ddcb42673ac2b9e55118bf.bckt.ru"
+    dlc_download_url = "https://storage.clo.ru/stellaris-dlcs/"
     dlc_files_validation_hashes = dlc_hashes
 
     def check_game_dir(self) -> None:

@@ -221,6 +221,7 @@ class BaseGameStrategy(ABC):
             for file in data_to_download:
                 filename = file+".zip"
                 full_url = urljoin(self.dlc_download_url, filename)
+                print(f"File full url: {full_url}")
 
                 try:
                     tqdm_download_util(full_url, self.dlc_dir, filename)

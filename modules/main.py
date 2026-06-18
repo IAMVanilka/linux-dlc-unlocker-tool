@@ -42,10 +42,15 @@ class DLCTool:
             run_the_game(self.strategy.app_id)
 
     def install_only_dlcs(self, force=False):
+        dlcs_list = self.strategy.get_dlcs_list()
+        self.strategy.create_configs(dlcs_list)
         if force:
             dlcs_to_download = self.strategy.dlc_files_validation_hashes
         else:
             dlcs_to_download = files_hash_check(self.strategy.dlc_dir, self.strategy.dlc_files_validation_hashes)
+            if not dlcs_to_download:
+                print("All DLCs are already downloaded and valid. Use --force option to redownload.")
+                return
         self.strategy.download_dlcs(data_to_download=dlcs_to_download)
         unzip_files(self.strategy.dlc_dir)
 
